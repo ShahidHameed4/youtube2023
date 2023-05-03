@@ -118,7 +118,14 @@ const VideoFrame = styled.video`
 
 const Video = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const { currentVideo } = useSelector((state) => state.video);
+  
+  const [currentVideo, setCurrentVideo] = useState([
+    {
+      _id: "",
+      videoUrl: "",
+    },
+
+  ]);
   const dispatch = useDispatch();
 
   const path = useLocation().pathname.split("/")[2];
@@ -128,12 +135,17 @@ const Video = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const videoRes = await axios.get(`/videos/find/${path}`);
-        const channelRes = await axios.get(
-          `/users/find/${videoRes.data.userId}`
-        );
-        setChannel(channelRes.data);
-        dispatch(fetchSuccess(videoRes.data));
+        const videoRes = await axios.get(`http://localhost:8800/api/videos/find/${path}`);
+        console.log(path)
+
+        // const channelRes = await axios.get(
+        //   `http://localhost:8800/api/users/find/${videoRes.data.userId}`
+        // );
+        // setChannel(channelRes.data);
+        // dispatch(fetchSuccess(videoRes.data));
+        setCurrentVideo(videoRes.data);
+        console.log(currentVideo );
+        console.log("-----------------------");
       } catch (err) {}
     };
     fetchData();
@@ -163,12 +175,12 @@ const Video = () => {
         <VideoWrapper>
           <VideoFrame src={currentVideo.videoUrl} controls />
         </VideoWrapper>
-        <Title>{currentVideo.title}</Title>
+        <Title>" "</Title>
         <Details>
           <Info>
-            {currentVideo.views} views • {format(currentVideo.createdAt)}
+            {/* {currentVideo.views} views • " " */}
           </Info>
-          <Buttons>
+          {/* <Buttons>
             <Button onClick={handleLike}>
               {currentVideo.likes?.includes(currentUser?._id) ? (
                 <ThumbUpIcon />
@@ -191,28 +203,28 @@ const Video = () => {
             <Button>
               <AddTaskOutlinedIcon /> Save
             </Button>
-          </Buttons>
+          </Buttons> */}
         </Details>
         <Hr />
         <Channel>
-          <ChannelInfo>
+          {/* <ChannelInfo>
             <Image src={channel.img} />
             <ChannelDetail>
               <ChannelName>{channel.name}</ChannelName>
               <ChannelCounter>{channel.subscribers} subscribers</ChannelCounter>
               <Description>{currentVideo.desc}</Description>
             </ChannelDetail>
-          </ChannelInfo>
-          <Subscribe onClick={handleSub}>
+          </ChannelInfo> */}
+          {/* <Subscribe onClick={handleSub}>
             {currentUser.subscribedUsers?.includes(channel._id)
               ? "SUBSCRIBED"
               : "SUBSCRIBE"}
-          </Subscribe>
+          </Subscribe> */}
         </Channel>
         <Hr />
-        <Comments videoId={currentVideo._id} />
+        {/* <Comments videoId={currentVideo._id} /> */}
       </Content>
-      <Recommendation tags={currentVideo.tags} />
+      {/* <Recommendation tags={currentVideo.tags} /> */}
     </Container>
   );
 };

@@ -117,6 +117,7 @@ const Upload = ({ setOpen }) => {
       (error) => {},
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log("File available at", downloadURL);
           setInputs((prev) => {
             return { ...prev, [urlType]: downloadURL };
           });
@@ -135,7 +136,8 @@ const Upload = ({ setOpen }) => {
 
   const handleUpload = async (e)=>{
     e.preventDefault();
-    const res = await axios.post("/videos", {...inputs, tags})
+    console.log({...inputs, tags})
+    const res = await axios.post("http://localhost:8800/api/videos", {...inputs, tags})
     setOpen(false)
     res.status===200 && navigate(`/video/${res.data._id}`)
   }

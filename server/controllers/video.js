@@ -3,7 +3,8 @@ import Video from "../models/Video.js";
 import { createError } from "../error.js";
 
 export const addVideo = async (req, res, next) => {
-  const newVideo = new Video({ userId: req.user.id, ...req.body });
+
+  const newVideo = new Video({ userId: 1, ...req.body });
   try {
     const savedVideo = await newVideo.save();
     res.status(200).json(savedVideo);

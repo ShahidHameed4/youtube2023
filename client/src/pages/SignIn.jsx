@@ -80,7 +80,7 @@ const SignIn = () => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      const res = await axios.post("/auth/signin", { name, password });
+      const res = await axios.post("http://localhost:8800/api/auth/signin", { name, password });
       dispatch(loginSuccess(res.data));
       navigate("/")
     } catch (err) {
@@ -93,7 +93,7 @@ const SignIn = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         axios
-          .post("/auth/google", {
+          .post("http://localhost:8800/api/auth/google", {
             name: result.user.displayName,
             email: result.user.email,
             img: result.user.photoURL,
@@ -108,6 +108,19 @@ const SignIn = () => {
         dispatch(loginFailure());
       });
   };
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    dispatch(loginStart());
+    try {
+      const res = await axios.post("http://localhost:8800/api/auth/signup", { name, email, password });
+      console.log(res)
+      navigate("/")
+    } catch (err) {
+      dispatch(loginFailure());
+    }
+  };
+
 
   //TODO: REGISTER FUNCTIONALITY
 
@@ -140,7 +153,7 @@ const SignIn = () => {
           placeholder="password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button>Sign up</Button>
+        <Button onClick={handleSignup}>Sign up</Button>
       </Wrapper>
       <More>
         English(USA)
